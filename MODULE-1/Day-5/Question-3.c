@@ -1,40 +1,38 @@
-// set 6.3 --> Compute Total Seconds
+/** 3. Write a program using structures to calculate the difference between two time periods using a user-defined function **/
 
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
-unsigned long compute_total_seconds(const char* time_string) {
-  char* token;
-  char* remainder;
-  unsigned long hours, minutes, seconds;
+struct Time {
+    int hours;
+    int minutes;
+    int seconds;
+};
 
-  char* time_copy = strdup(time_string);  
-  token = strtok(time_copy, ":");
-  hours = strtoul(token, &remainder, 10);
+void getTimeDifference(struct Time t1, struct Time t2, struct Time* difference) {
+    int seconds1 = t1.hours * 3600 + t1.minutes * 60 + t1.seconds;
+    int seconds2 = t2.hours * 3600 + t2.minutes * 60 + t2.seconds;
+    int diffSeconds = seconds2 - seconds1;
 
-  token = strtok(NULL, ":");
-  minutes = strtoul(token, &remainder, 10);
+    difference->hours = diffSeconds / 3600;
+    diffSeconds = diffSeconds % 3600;
 
-  token = strtok(NULL, ":");
-  seconds = strtoul(token, &remainder, 10);
-
-  free(time_copy);  
-
-  unsigned long total_seconds = hours * 3600 + minutes * 60 + seconds;
-  return total_seconds;
+    difference->minutes = diffSeconds / 60;
+    difference->seconds = diffSeconds % 60;
 }
 
 int main() {
-  const char* time_string1 = "10:12:50";
-  unsigned long total_seconds1 = compute_total_seconds(time_string1);
-  printf("Time String: %s\n", time_string1);
-  printf("Total Seconds: %lu\n", total_seconds1);
+    struct Time startTime, endTime, difference;
 
-  const char* time_string2 = "13:10:40";
-  unsigned long total_seconds2 = compute_total_seconds(time_string2);
-  printf("Time String: %s\n", time_string2);
-  printf("Total Seconds: %lu\n", total_seconds2);
+    printf("Enter the start time (hours minutes seconds): ");
+    scanf("%d %d %d", &(startTime.hours), &(startTime.minutes), &(startTime.seconds));
 
-  return 0;
+    printf("Enter the end time (hours minutes seconds): ");
+    scanf("%d %d %d", &(endTime.hours), &(endTime.minutes), &(endTime.seconds));
+
+    getTimeDifference(startTime, endTime, &difference);
+
+    printf("Time difference: %d hours, %d minutes, %d seconds\n",
+           difference.hours, difference.minutes, difference.seconds);
+
+    return 0;
 }

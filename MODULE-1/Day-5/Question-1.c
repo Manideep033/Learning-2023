@@ -1,38 +1,41 @@
-// set 6.1 --> Toggle Case
+/**  ***LEVEL-1***
+
+1. Use structures to find the volume and the total surface area of the box. 
+   You need to access the members of the structure with the help of a structure pointer:
+    a. With the help of (*) asterisk or indirection operator and (.) dot operator.
+    b. With the help of ( -> ) Arrow operator using pointer as well as dot representation. **/
 
 #include <stdio.h>
-#include <ctype.h>
 
-void toggle_case(char* string) {
-  for (int i = 0; string[i] != '\0'; i++) {
-    if (isupper(string[i])) {
-      string[i] = tolower(string[i]);
-    } else if (islower(string[i])) {
-      string[i] = toupper(string[i]);
-    }
-  }
+struct Box {
+    double length;
+    double width;
+    double height;
+};
+
+double calculateVolume(struct Box* boxPtr) {
+    return boxPtr->length * boxPtr->width * boxPtr->height;
+}
+
+double calculateSurfaceArea(struct Box* boxPtr) {
+    return 2 * (boxPtr->length * boxPtr->width + boxPtr->length * boxPtr->height + boxPtr->width * boxPtr->height);
 }
 
 int main() {
-  char string[] = "Hello World";
-  toggle_case(string);
-  printf("Output 1: %s\n", string);
+    struct Box myBox = { 5.0, 3.0, 4.0 };
+    struct Box* boxPtr = &myBox;
 
-  char string2[] = "Hello World";
-  toggle_case(string2);
-  printf("Output 2: %s\n", string2);
+    // Accessing members using (*) asterisk and (.) dot operator
+    double volume = (*boxPtr).length * (*boxPtr).width * (*boxPtr).height;
+    double surfaceArea = 2 * ((*boxPtr).length * (*boxPtr).width + (*boxPtr).length * (*boxPtr).height + (*boxPtr).width * (*boxPtr).height);
+    printf("Volume (using (*) and .): %.2f\n", volume);
+    printf("Surface Area (using (*) and .): %.2f\n", surfaceArea);
 
-  char string3[] = "a+B";
-  toggle_case(string3);
-  printf("Output 3: %s\n", string3);
+    // Accessing members using (->) arrow operator (both pointer and dot representation)
+    volume = boxPtr->length * boxPtr->width * boxPtr->height;
+    surfaceArea = 2 * (boxPtr->length * boxPtr->width + boxPtr->length * boxPtr->height + boxPtr->width * boxPtr->height);
+    printf("Volume (using ->): %.2f\n", volume);
+    printf("Surface Area (using ->): %.2f\n", surfaceArea);
 
-  char string4[] = "A+B";
-  toggle_case(string4);
-  printf("Output 4: %s\n", string4);
-
-  char string5[] = "Prog4u";
-  toggle_case(string5);
-  printf("Output 5: %s\n", string5);
-
-  return 0;
+    return 0;
 }
